@@ -1,31 +1,23 @@
 import { Controller, Get, Param, Query, Render } from '@nestjs/common';
 import { AppService } from './app.service';
-
-
-// file system module to perform file operations
-const fs = require('fs-extra');
-
+import FileSystem from './Utils/FileSystem';
 
 @Controller('example')
 export class AppController {
   constructor(private readonly appService: AppService) {}
   
-  createJSON(file: string, content: string, cb?: any) {
-    fs.outputFile('storage/' + file + '.json', content, err => {
-      if(err) {
-        console.log(err);
-      } else {
-        console.log('The file was saved!');
-      }
-    })
+  @Get('use/:file')
+  use(@Param('file') file: string,): any {
+    const data = require(`../storage/${file}.json`)
+    return data;
   }
 
   @Get(':structure/:reference')
   @Render('index.pug')
-  getComponentStructure(@Param('structure') structure: string,
-                        @Param('reference') reference: string): any {
+  getComponentStructure(
+    @Param('structure') structure: string,
+    @Param('reference') reference: string): any {
     
-
     if(typeof structure !== 'string') throw new Error('Is not string.');
     const inputs = [
       { 
@@ -35,11 +27,15 @@ export class AppController {
         'order': '0',
       }
     ];
+
+      if(reference === 'test') {
+        inputs[0].placeholder = 'Referencias de teste';
+      }
         // stringify JSON Object
         const jsonContent = JSON.stringify(inputs);
         console.log(jsonContent);
      
-        this.createJSON("structure", jsonContent);
+        FileSystem.json("structure", jsonContent);
     return  { 'inputs': inputs };
   }
 
@@ -58,7 +54,7 @@ export class AppController {
     // stringify JSON Object
     const jsonContent = JSON.stringify(data);
     console.log(jsonContent); 
-    this.createJSON("component", jsonContent);
+    FileSystem.json("component", jsonContent);
     return this.appService.getComponent(data);
   }
 }
