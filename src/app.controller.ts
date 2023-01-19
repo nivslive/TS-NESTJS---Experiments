@@ -13,7 +13,7 @@ export class AppController {
   @Get('type/preview/:layout')
   @Render('type/index.pug') 
   type(@Param('layout') layout: string, @Res() res) {
-    return  { 'type': layout };
+    return  { 'type': layout, 'components': require('../storage/component.json') };
   }
 
   @Get('use/:file')
@@ -22,7 +22,62 @@ export class AppController {
   }
 
   getComponents(components: string): any {
-    return components;
+    let array: Array<Object> = [];
+    let componentData: Object = {}; 
+    const componentsBroken: Array<String> = components.split(',');
+    componentsBroken.forEach((component) => {
+      if(component === 'button') {
+        componentData = {
+          type: component,
+          data: {
+            color: 'red',
+            border: '1px solid blue',
+            title: 'title nois',
+          }
+        };
+        array.push(componentData);
+        };
+
+        if(component === 'header') {
+          componentData = {
+            type: component,
+            data: {
+              color: 'red',
+              border: '1px solid blue',
+              title: 'title nois',
+            }
+          };
+          array.push(componentData);
+          };
+
+
+        if(component === 'menu') {
+          componentData = {
+            type: component,
+            data: {
+              color: 'red',
+              border: '1px solid blue',
+              title: 'title nois',
+            }
+          };
+          array.push(componentData);
+          };
+
+
+        if(component === 'galery') {
+          componentData = {
+            type: component,
+            data: {
+              color: 'red',
+              border: '1px solid blue',
+              title: 'title nois',
+            }
+          };
+          array.push(componentData);
+          };
+      }
+    )
+    return array;
   }
 
   getReference(reference: string): any {

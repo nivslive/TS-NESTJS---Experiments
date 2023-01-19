@@ -2,7 +2,40 @@
   {
     "type": "magnificant",
     "reference": {
-      "components": "button,header,menu,galery"
+      "components": [
+        {
+          "type": "button",
+          "data": {
+            "color": "red",
+            "border": "1px solid blue",
+            "title": "title nois"
+          }
+        },
+        {
+          "type": "header",
+          "data": {
+            "color": "red",
+            "border": "1px solid blue",
+            "title": "title nois"
+          }
+        },
+        {
+          "type": "menu",
+          "data": {
+            "color": "red",
+            "border": "1px solid blue",
+            "title": "title nois"
+          }
+        },
+        {
+          "type": "galery",
+          "data": {
+            "color": "red",
+            "border": "1px solid blue",
+            "title": "title nois"
+          }
+        }
+      ]
     },
     "placeholder": "",
     "order": "0"
