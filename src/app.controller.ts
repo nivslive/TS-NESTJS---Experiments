@@ -1,14 +1,66 @@
-import { Controller, Get, Param, Query, Render } from '@nestjs/common';
+import { Controller, Get, Param, Query, Render, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import FileSystem from './Utils/FileSystem';
 
 @Controller('example')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  previewFile: string = 'index';
+  constructor(private readonly appService: AppService) {
+    this.previewFile = 'index';
+  }
   
+  
+  @Get('type/preview/:layout')
+  @Render('type/index.pug') 
+  type(@Param('layout') layout: string, @Res() res) {
+    return  { 'type': layout };
+  }
+
   @Get('use/:file')
   use(@Param('file') file: string,): FileSystem {
     return FileSystem.pick(file);
+  }
+
+  getComponents(components: string): any {
+    return components;
+  }
+
+  getReference(reference: string): any {
+
+    if(reference === 'default') {
+      return {
+        'components': this.getComponents('button,header,menu,galery'),
+      };
+    }
+
+    if(reference === 'library') {
+      return {
+        'components': this.getComponents('button,header,menu,galery'),
+      };
+    }
+
+    if(reference === 'office') {
+      return {
+        'components': this.getComponents('button,header,menu,galery'),
+      };
+    }
+
+    if(reference === 'comercio') {
+      return {
+        'components': this.getComponents('button,header,menu,galery, commerce'),
+      };
+    }
+
+
+    if(reference === 'magistant') {
+      return {
+        'components': this.getComponents('button,header,menu,galery'),
+      };
+    }
+  }
+
+  getStructure(structure: string): any {
+
   }
 
   @Get('create/:structure/:reference')
@@ -21,13 +73,13 @@ export class AppController {
     const inputs = [
       { 
         'type': structure,
-        'reference': reference,
+        'reference':  this.getReference(reference),
         'placeholder': '',
         'order': '0',
       }
     ];
 
-      if(reference === 'test') {
+      if(reference === 'magnificant') {
         inputs[0].placeholder = 'Referencias de teste';
       }
         // stringify JSON Object

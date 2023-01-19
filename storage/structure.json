@@ -1,1 +1,10 @@
-[{"type":"uses","reference":"case","placeholder":"","order":"0"}]
+[
+  {
+    "type": "magnificant",
+    "reference": {
+      "components": "button,header,menu,galery"
+    },
+    "placeholder": "",
+    "order": "0"
+  }
+]
