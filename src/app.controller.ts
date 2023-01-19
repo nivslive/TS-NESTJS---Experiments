@@ -1,25 +1,10 @@
 import { Controller, Get, Param, Query, Render } from '@nestjs/common';
 import { AppService } from './app.service';
-var express = require('express')
-var multer = require('multer')
-var getDirName = require('path').dirname;
-var upload = multer({ storage: multer.memoryStorage() })  // 1
-var app = express()
+
+
 // file system module to perform file operations
 const fs = require('fs-extra');
-app.get('/buseta', upload.single('event'), (req, res) => { // 2
-// json data
-var jsonData = '{"test":[{"name":"John","city":"New York"},{"name":"Phil","city":"Ohio"}]}';
- 
-// parse json
-var jsonObj = JSON.parse(jsonData);
-console.log(jsonObj);
 
-})
-
-app.listen(4000, () => {
-  console.log('server running')
-})
 
 @Controller('example')
 export class AppController {
@@ -55,7 +40,7 @@ export class AppController {
         console.log(jsonContent);
      
         this.createJSON("structure", jsonContent);
-    return inputs;
+    return  { 'inputs': inputs };
   }
 
   @Get(':component')
