@@ -7,12 +7,11 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
   
   @Get('use/:file')
-  use(@Param('file') file: string,): any {
-    const data = require(`../storage/${file}.json`)
-    return data;
+  use(@Param('file') file: string,): FileSystem {
+    return FileSystem.pick(file);
   }
 
-  @Get(':structure/:reference')
+  @Get('create/:structure/:reference')
   @Render('index.pug')
   getComponentStructure(
     @Param('structure') structure: string,

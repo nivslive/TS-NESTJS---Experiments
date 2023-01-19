@@ -9,4 +9,8 @@ export default class FileSystem {
           }
         })
       }
+    static pick(file: string,): any {
+        const data = require(`../../storage/${file}.json`)
+        return data;
+    }
 }
