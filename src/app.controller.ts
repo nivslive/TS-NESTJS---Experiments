@@ -1,11 +1,12 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, Render } from '@nestjs/common';
 import { AppService } from './app.service';
 var express = require('express')
 var multer = require('multer')
+var getDirName = require('path').dirname;
 var upload = multer({ storage: multer.memoryStorage() })  // 1
 var app = express()
 // file system module to perform file operations
-const fs = require('fs');
+const fs = require('fs-extra');
 app.get('/buseta', upload.single('event'), (req, res) => { // 2
 // json data
 var jsonData = '{"test":[{"name":"John","city":"New York"},{"name":"Phil","city":"Ohio"}]}';
@@ -23,8 +24,19 @@ app.listen(4000, () => {
 @Controller('example')
 export class AppController {
   constructor(private readonly appService: AppService) {}
+  
+  createJSON(file: string, content: string, cb?: any) {
+    fs.outputFile('storage/' + file + '.json', content, err => {
+      if(err) {
+        console.log(err);
+      } else {
+        console.log('The file was saved!');
+      }
+    })
+  }
 
   @Get(':structure/:reference')
+  @Render('index.pug')
   getComponentStructure(@Param('structure') structure: string,
                         @Param('reference') reference: string): any {
     
@@ -42,13 +54,7 @@ export class AppController {
         const jsonContent = JSON.stringify(inputs);
         console.log(jsonContent);
      
-        fs.writeFile("structure.json", jsonContent, 'utf8', function (err) {
-        if (err) {
-                  console.log("An error occured while writing JSON Object to File.");
-                  return console.log(err);
-        }
-        console.log("JSON file has been saved.");
-        }); 
+        this.createJSON("structure", jsonContent);
     return inputs;
   }
 
@@ -66,15 +72,8 @@ export class AppController {
      
     // stringify JSON Object
     const jsonContent = JSON.stringify(data);
-    console.log(jsonContent);
- 
-    fs.writeFile("components.json", jsonContent, 'utf8', function (err) {
-    if (err) {
-              console.log("An error occured while writing JSON Object to File.");
-              return console.log(err);
-    }
-    console.log("JSON file has been saved.");
-    });   
+    console.log(jsonContent); 
+    this.createJSON("component", jsonContent);
     return this.appService.getComponent(data);
   }
 }

@@ -1,0 +1,13 @@
+html
+    head
+        title='Test'
+    body
+        ul
+            h1='oi?'
+            each p in inputs
+                h1=p.type
+            if component !== undefined
+                if component.variation === 'test' 
+                    include variations/test.pug
+                if component.variation === 'testando'
+                    include variations/testando.pug
