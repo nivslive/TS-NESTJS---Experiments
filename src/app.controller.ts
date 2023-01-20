@@ -4,16 +4,15 @@ import FileSystem from './Utils/FileSystem';
 
 @Controller('example')
 export class AppController {
-  previewFile: string = 'index';
   constructor(private readonly appService: AppService) {
-    this.previewFile = 'index';
   }
   
   
   @Get('type/preview/:layout')
   @Render('type/index.pug') 
-  type(@Param('layout') layout: string, @Res() res) {
-    return  { 'type': layout, 'components': require('../storage/component.json') };
+  type(@Param('layout') layout: string) {
+    const data = require('../storage/structure.json')[0];
+    return  { 'type': data.type, 'structure': data.reference.components };
   }
 
   @Get('use/:file')
@@ -26,6 +25,7 @@ export class AppController {
     let componentData: Object = {}; 
     const componentsBroken: Array<String> = components.split(',');
     componentsBroken.forEach((component) => {
+      
       if(component === 'button') {
         componentData = {
           type: component,
@@ -35,46 +35,44 @@ export class AppController {
             title: 'title nois',
           }
         };
-        array.push(componentData);
+      };
+
+      if(component === 'header') {
+        componentData = {
+          type: component,
+          data: {
+            color: 'red',
+            border: '1px solid blue',
+            title: 'title nois',
+          }
         };
-
-        if(component === 'header') {
-          componentData = {
-            type: component,
-            data: {
-              color: 'red',
-              border: '1px solid blue',
-              title: 'title nois',
-            }
-          };
-          array.push(componentData);
-          };
+      };
 
 
-        if(component === 'menu') {
-          componentData = {
-            type: component,
-            data: {
-              color: 'red',
-              border: '1px solid blue',
-              title: 'title nois',
-            }
-          };
-          array.push(componentData);
-          };
+      if(component === 'menu') {
+        componentData = {
+          type: component,
+          data: {
+            color: 'red',
+            border: '1px solid blue',
+            title: 'title nois',
+          }
+        };
+      };
 
 
-        if(component === 'galery') {
-          componentData = {
-            type: component,
-            data: {
-              color: 'red',
-              border: '1px solid blue',
-              title: 'title nois',
-            }
-          };
-          array.push(componentData);
-          };
+      if(component === 'galery') {
+        componentData = {
+          type: component,
+          data: {
+            color: 'red',
+            border: '1px solid blue',
+            title: 'title nois',
+          }
+        };
+      };
+
+        array.push(componentData);
       }
     )
     return array;
