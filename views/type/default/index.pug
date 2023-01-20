@@ -1,2 +1,16 @@
 h1 type default
-h2 components
+h2=type
+
+if type === 'default'   
+if structure !== undefined
+
+    each ref in structure
+        h1 #{ref}
+        if ref.type === 'button'
+            include components/button.pug
+        if ref.type === 'galery'
+            include components/galery.pug
+        if ref.type === 'menu'
+            include components/menu.pug
+        if ref.tpugype === 'galery'
+            include components/galery.
