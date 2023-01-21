@@ -1,16 +1,8 @@
 [
   {
-    "type": "default",
+    "type": "portfolio",
     "reference": {
       "components": [
-        {
-          "type": "button",
-          "data": {
-            "color": "red",
-            "border": "1px solid blue",
-            "title": "title nois"
-          }
-        },
         {
           "type": "header",
           "data": {
@@ -34,10 +26,44 @@
             "border": "1px solid blue",
             "title": "title nois"
           }
+        },
+        {
+          "type": "about",
+          "data": {
+            "color": "red",
+            "border": "1px solid blue",
+            "title": "title nois"
+          }
+        },
+        {
+          "type": "footer",
+          "data": {
+            "color": "red",
+            "border": "1px solid blue",
+            "title": "title nois",
+            "social_medias": [
+              {
+                "title": "facebook",
+                "url": "facebook.com"
+              },
+              {
+                "title": "orkut",
+                "url": "orkut.com"
+              },
+              {
+                "title": "test",
+                "url": "test.com"
+              },
+              {
+                "title": "test",
+                "url": "test.com"
+              }
+            ]
+          }
         }
       ]
     },
     "placeholder": "",
-    "order": "0"
+    "order": 0
   }
 ]
