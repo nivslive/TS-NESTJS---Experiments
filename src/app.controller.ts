@@ -134,41 +134,13 @@ export class AppController {
   };
 
   getReference(reference: string): any {
-
-    try {
-      if(reference === 'default') {
-        return {
-          'components': this.getComponents('button,header,menu,galery'),
-        };
-      }
-
-      if(reference === 'portfolio') {
-        return {
-          'components': this.getComponents('header, menu, galery, about, footer')
-        }
-      }
-
-      if(reference === 'blog') {
-        return {
-          'components': this.getComponents('button,header,menu,galery'),
-        };
-      }
-
-      if(reference === 'office') {
-        return {
-          'content': {
-            single_page: false,
-
-          },
-          'components': this.getComponents('button,header,menu,galery'),
-        };
-      }
-
-
-    } catch(e) {
-      return "Não tem essa referencia";
+    const references = {
+      'default': 'button, header, menu, galery',
+      'portfolio': 'header,menu, galery, about, footer'
     }
-      
+    try {
+      return this.getComponents(references[reference]);
+    } catch(e) { return "Não tem essa referencia"; }      
   }
 
   getStructure(structure: string): any {
