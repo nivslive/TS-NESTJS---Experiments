@@ -130,8 +130,8 @@ export class AppController {
     const componentsSplited: Array<String> = components.split(',');
     if(this.getType() === 'portfolio') 
       return this.getPortfolioComponentData(componentsSplited);
-    if(this.getType() === 'default') 
-      return this.getDefaultComponentData(componentsSplited);
+    //if(this.getType() === 'default') 
+      // return this.getDefaultComponentData(componentsSplited);
   };
 
   getReference(reference: string): Array<Object> | String {
