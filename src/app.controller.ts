@@ -2,6 +2,7 @@ import { Controller, Get, Param, Query, Render, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import FileSystem from './Utils/FileSystem';
 import { response } from 'express';
+import internal from 'stream';
 
 @Controller('app')
 export class AppController {
@@ -27,13 +28,11 @@ export class AppController {
   setType(type: string): void {
     this.type = type;
   }
-  getDefaultComponentData(components: Array<any>): any {
 
-  }
-  getIterateComponents(...response: any) {
+  getIterateComponents(...response: any): Object[] {
     return [...response];
   }
-  getComponentData(response: string) {
+  getComponentData(response: string): Object {
     let object: Object = {};
     response.split(',').forEach((res) => {
       let splited: Array<string> = res.split(':');
@@ -43,56 +42,77 @@ export class AppController {
     return object
   }
   portoflioComponentData(component: string): Object {
+  
+    interface IComponent {
+      type: string,
+      variation: number,
+      data: Object,
+    }
+    
+    let variation: IComponent = {
+      type: "",
+      variation: 1,
+      data: {},
+    };
+
     if(component === 'banner') {
-      return {
+      variation = {
         type: component,
+        variation: 1,
         data: {
-          color: 'red',
-          border: '1px solid blue',
+          
+          img: 'red',
           title: 'title nois',
+          description: '1px solid blue',
+          
           button: this.getComponentData(` 
-            title:title,
-            description:tal,
-            img:blau,
-            test:fodase,
-            maizena: seila,
-            test: aonde,
-            mano: porque,
-            seila: tentei,
-            tentei: porque,
-            kkk: caralho,
-            mano: deu bom,
-            pqp: TABOM,`)
+            title: title,
+            icon: test,
+            border: tal,
+            url:blau`)
         }
       };
     }
     if(component === 'about') {
-      return {
+      variation = {
         type: component,
+        variation: 1,
         data: this.getComponentData('color:red,border:1px solid blue, title: nois'),
       };
     }
     if(component === 'footer') {
       return {
         type: component,
+        variation: 1,
         data: {
           color: 'red',
           border: '1px solid blue',
           title: 'title nois',
           social_medias: this.getIterateComponents(
             this.getComponentData('title:facebook,url:facebook.com'),
-            this.getComponentData('title:orkut,url:orkut.com'),
-            this.getComponentData('title:test,url:test.com'),
-            this.getComponentData('title:test,url:test.com'),
-            this.getComponentData('title:test,url:test.com'),
-            this.getComponentData('title:test,url:test.com'), 
-            this.getComponentData('title:test,url:test.com'),
+            this.getComponentData('title:linkedin,url:linkedin.com'),
+          ),
+        }
+      };
+    }
+
+    if(component === 'list') {
+      return {
+        type: component,
+        variation: 1,
+        data: {
+          color: 'red',
+          border: '1px solid blue',
+          title: 'title nois',
+          social_medias: this.getIterateComponents(
+            this.getComponentData('title:facebook,url:facebook.com'),
+            this.getComponentData('title:linkedin,url:linkedin.com'),
           ),
         }
       };
     }
   }
-  getPortfolioComponentData(components: Array<any>): any {
+  getPortfolioComponentData(components: Array<any>): Array<Object> {
     console.log(components, 'getPortfolioComponentData');
     let array: Array<Object> = [];
     components.forEach((component) => {
@@ -114,7 +134,7 @@ export class AppController {
       return this.getDefaultComponentData(componentsSplited);
   };
 
-  getReference(reference: string): any {
+  getReference(reference: string): Array<Object> | String {
     const references = {
       'default': 'button, header, menu, galery',
       'portfolio': 'banner, about, footer'
@@ -143,17 +163,13 @@ export class AppController {
     this.setType(type);
     if(typeof type !== 'string') throw new Error('Is not string.');
     interface Iinputs {
-      type: String,
-      reference: any,
-      placeholder: String,
-      order: Number;
+      type: string,
+      reference: Object,
     }
     const inputs: Array<Iinputs> = [
       { 
         type: this.getType(),
         reference:  this.getReference(this.getType()),
-        placeholder: '',
-        order: 0,
       }
     ];
         // stringify JSON Object
@@ -162,24 +178,5 @@ export class AppController {
      
         FileSystem.json("structure", jsonContent);
     return  { 'inputs': inputs };
-  }
-
-  @Get(':component')
-  getComponent(@Param('component') component: string): Object {
-    let data: Object = {};
-    if(component === 'response') {
-      data = {
-        'id': '',
-        'component': '',
-        'type': '',
-        'data': [],
-      };
-    } 
-     
-    // stringify JSON Object
-    const jsonContent = JSON.stringify(data);
-    console.log(jsonContent); 
-    FileSystem.json("component", jsonContent);
-    return this.appService.getComponent(data);
   }
 }
