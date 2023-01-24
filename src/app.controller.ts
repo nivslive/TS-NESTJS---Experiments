@@ -150,24 +150,6 @@ export class AppController {
     @Param('page') type: string,
     @Param('reference') reference: string): any {
     this.setType(type);
-    const stringed: string =  `
-      @type: portfolio
-      
-      @page test  
-        @components:
-          
-          type: button
-          data:
-            title: fodase
-            describe: seila
-         
-          type: header
-          data:
-            title: seila
-            test: oi
-            magina: oi
-            seila: talvez
-    `;
     if(typeof type !== 'string') throw new Error('Is not string.');
     interface Iinputs {
       type: String,
