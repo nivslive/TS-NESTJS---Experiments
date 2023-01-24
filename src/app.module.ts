@@ -7,9 +7,7 @@ import   { Init }  from './database/database';
 
 
 @Module({
-  imports: [
-    
-PortfolioModule],
+  imports: [],
   controllers: [AppController],
   providers: [AppService],
 })

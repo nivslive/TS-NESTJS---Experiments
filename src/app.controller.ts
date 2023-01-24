@@ -38,7 +38,7 @@ export class AppController {
     response.split(',').forEach((res) => {
       let splited: Array<string> = res.split(':');
       console.log(splited, 'getComponentData: splited')
-      object[splited[0]] = splited[1];
+      object[splited[0].trim()] = splited[1];
     })
     return object
   }
@@ -58,18 +58,18 @@ export class AppController {
             maizena: seila,
             test: aonde,
             mano: porque,
-            `),
+            seila: tentei,
+            tentei: porque,
+            kkk: caralho,
+            mano: deu bom,
+            pqp: TABOM,`)
         }
       };
     }
     if(component === 'about') {
       return {
         type: component,
-        data: {
-          color: 'red',
-          border: '1px solid blue',
-          title: 'title nois',
-        }
+        data: this.getComponentData('color:red,border:1px solid blue, title: nois'),
       };
     }
     if(component === 'footer') {
@@ -79,24 +79,15 @@ export class AppController {
           color: 'red',
           border: '1px solid blue',
           title: 'title nois',
-          social_medias: [
-            {
-              title: 'facebook',
-              url: 'facebook.com'
-            },
-            {
-              title: 'orkut',
-              url: 'orkut.com'
-            },
-            {
-              title: 'test',
-              url: 'test.com'
-            },
-            {
-              title: 'test',
-              url: 'test.com'
-            },
-          ],
+          social_medias: this.getIterateComponents(
+            this.getComponentData('title:facebook,url:facebook.com'),
+            this.getComponentData('title:orkut,url:orkut.com'),
+            this.getComponentData('title:test,url:test.com'),
+            this.getComponentData('title:test,url:test.com'),
+            this.getComponentData('title:test,url:test.com'),
+            this.getComponentData('title:test,url:test.com'), 
+            this.getComponentData('title:test,url:test.com'),
+          ),
         }
       };
     }
@@ -126,7 +117,7 @@ export class AppController {
   getReference(reference: string): any {
     const references = {
       'default': 'button, header, menu, galery',
-      'portfolio': 'about, footer'
+      'portfolio': 'banner, about, footer'
     }
     console.log(this.getComponents(references[reference]), 'getReference: references');
     try {
