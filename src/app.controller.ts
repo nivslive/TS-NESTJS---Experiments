@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Query, Render, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import FileSystem from './Utils/FileSystem';
+import { response } from 'express';
 
 @Controller('app')
 export class AppController {
@@ -29,103 +30,92 @@ export class AppController {
   getDefaultComponentData(components: Array<any>): any {
 
   }
+  getIterateComponents(...response: any) {
+    return [...response];
+  }
+  getComponentData(response: string) {
+    let object: Object = {};
+    response.split(',').forEach((res) => {
+      let splited: Array<string> = res.split(':');
+      console.log(splited, 'getComponentData: splited')
+      object[splited[0]] = splited[1];
+    })
+    return object
+  }
+  portoflioComponentData(component: string): Object {
+    if(component === 'banner') {
+      return {
+        type: component,
+        data: {
+          color: 'red',
+          border: '1px solid blue',
+          title: 'title nois',
+          button: this.getComponentData(` 
+            title:title,
+            description:tal,
+            img:blau,
+            test:fodase,
+            maizena: seila,
+            test: aonde,
+            mano: porque,
+            `),
+        }
+      };
+    }
+    if(component === 'about') {
+      return {
+        type: component,
+        data: {
+          color: 'red',
+          border: '1px solid blue',
+          title: 'title nois',
+        }
+      };
+    }
+    if(component === 'footer') {
+      return {
+        type: component,
+        data: {
+          color: 'red',
+          border: '1px solid blue',
+          title: 'title nois',
+          social_medias: [
+            {
+              title: 'facebook',
+              url: 'facebook.com'
+            },
+            {
+              title: 'orkut',
+              url: 'orkut.com'
+            },
+            {
+              title: 'test',
+              url: 'test.com'
+            },
+            {
+              title: 'test',
+              url: 'test.com'
+            },
+          ],
+        }
+      };
+    }
+  }
   getPortfolioComponentData(components: Array<any>): any {
+    console.log(components, 'getPortfolioComponentData');
     let array: Array<Object> = [];
-    let componentData: Object = {};
     components.forEach((component) => {
       try {
         component = component.trim();
-        if(component === 'header') {
-          componentData = {
-            type: component,
-            data: {
-              color: 'red',
-              border: '1px solid blue',
-              title: 'title nois',
-            }
-          };
-          array.push(componentData);
-        }
-        if(component === 'banner') {
-          componentData = {
-            type: component,
-            data: {
-              color: 'red',
-              border: '1px solid blue',
-              title: 'title nois',
-            }
-          };
-          array.push(componentData);
-        }
-        
-        if(component === 'menu') {
-          componentData = {
-            type: component,
-            data: {
-              color: 'red',
-              border: '1px solid blue',
-              title: 'title nois',
-            }
-          };
-          array.push(componentData);
-        }
-        if(component === 'galery') {
-          componentData = {
-            type: component,
-            data: {
-              color: 'red',
-              border: '1px solid blue',
-              title: 'title nois',
-            }
-          };
-          array.push(componentData);
-        }
-        if(component === 'about') {
-          componentData = {
-            type: component,
-            data: {
-              color: 'red',
-              border: '1px solid blue',
-              title: 'title nois',
-            }
-          };
-          array.push(componentData);
-        }
-        if(component === 'footer') {
-          componentData = {
-            type: component,
-            data: {
-              color: 'red',
-              border: '1px solid blue',
-              title: 'title nois',
-              social_medias: [
-                {
-                  title: 'facebook',
-                  url: 'facebook.com'
-                },
-                {
-                  title: 'orkut',
-                  url: 'orkut.com'
-                },
-                {
-                  title: 'test',
-                  url: 'test.com'
-                },
-                {
-                  title: 'test',
-                  url: 'test.com'
-                },
-              ],
-            }
-          };
-          array.push(componentData);
-        }
+        array.push(this.portoflioComponentData(component));
       } catch(e) {}
     })
+    console.log(array, 'array: getPortfolioComponentData');
     return array;
   }
 
   getComponents(components: string): Array<Object> {
+    console.log(components, 'getComponents');
     const componentsSplited: Array<String> = components.split(',');
     if(this.getType() === 'portfolio') 
       return this.getPortfolioComponentData(componentsSplited);
@@ -136,8 +126,9 @@ export class AppController {
   getReference(reference: string): any {
     const references = {
       'default': 'button, header, menu, galery',
-      'portfolio': 'header,menu, galery, about, footer'
+      'portfolio': 'about, footer'
     }
+    console.log(this.getComponents(references[reference]), 'getReference: references');
     try {
       return this.getComponents(references[reference]);
     } catch(e) { return "Não tem essa referencia"; }      
@@ -146,13 +137,37 @@ export class AppController {
   getStructure(structure: string): any {
 
   }
-
+  detectEnterInSring(str: string): void {
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] === '\n' || str[i] === '\r') {
+      console.log('found enter key')
+    };
+  };
+  }
   @Get('create/:page/:reference')
   @Render('index.pug')
   getComponentStructure(
     @Param('page') type: string,
     @Param('reference') reference: string): any {
     this.setType(type);
+    const stringed: string =  `
+      @type: portfolio
+      
+      @page test  
+        @components:
+          
+          type: button
+          data:
+            title: fodase
+            describe: seila
+         
+          type: header
+          data:
+            title: seila
+            test: oi
+            magina: oi
+            seila: talvez
+    `;
     if(typeof type !== 'string') throw new Error('Is not string.');
     interface Iinputs {
       type: String,
@@ -168,10 +183,6 @@ export class AppController {
         order: 0,
       }
     ];
-
-      if(reference === 'magnificant') {
-        inputs[0].placeholder = 'Referencias de teste';
-      }
         // stringify JSON Object
         const jsonContent = JSON.stringify(inputs);
         console.log(jsonContent);

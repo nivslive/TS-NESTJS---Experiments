@@ -1,0 +1,21 @@
+@type: portfolio
+      
+@page: test  
+    @components:
+          
+        type: button
+        data:
+            title: fodase
+            describe: seila
+         
+        type: header
+        data:
+            title: seila
+            test: oi
+            magina: oi
+            seila: talvez
+            button:
+                title: oi
+                description: test
+                matest: seila
+                karaio: oi
